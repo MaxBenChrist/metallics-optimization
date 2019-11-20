@@ -1,34 +1,83 @@
 # The hackathon
 
-See the initial checkins for examples of the data. We will need to add more to the data, but not more than 15/20 lines of data for each file. We can discuss the data further. Idea is not to create very detailed data, just enough to make things interesting.
+- Each team must produce recipes for the production schedule of heats (given in data/?/production_schedule.json).
 
-## Proceeding
+- The final output must be in the same format as given in data/final_output_example.json. The fields are self explanatory.
 
-- Form 2 or more teams.
-- Each team has members from Noodle and SMS.
-- Give each team their own directory in which to checkin code.
-- No proprietary code. This will be a private repo but at this stage all code is assumed to be public.
+- The only data available is under the data directory as described in data/README. Please read this file carefully.
+
+- Optimization for the recipes:
+  - The only thing being optimized for is scrap cost. We assume there are no other costs.
+
+- Try to create a solution that at the high level might resemble the actual metallics solution in terms of the components. I.e. Models for Copper and yield estimation, the optimizer that creates recipes and uses the models (or api's to the models) to create recipes, etc.
+
+## Teams
+
+- Team 1 "drop-tables": Nishant, Max, Ibrahim
+- Team 2: Rohan, Dehong, Simon
+- Team 3: Ajay, Rashmi, Ashish
+- Team 4: Shyam, Evgenii, Philipp
+- Team 5: Ying, Sebastian, Lena
+
+### Constraints:
+- See constraints.json in every dataset. They are self-explanatory and minimal.
+
+### Copper model:
+The only tramp element being measured and specified in the production schedule is Copper (cu). The only data you have to create a copper model is the history of previous heats (data/?/previous_heats_with_properties.json). (See data/README.md for more.)
+
+## Rules
+
+- No existing Noodle or SMS code can be used. Assume everything in this repo is public.
+
+- GIT policies:
+  - NO CHECKINS into the master branch.
+  - Create a branch for your team. I.e. team-funny-geeks. Use this as your teams 'master'.
+  - For your own work, if you want to push additional branches to the repo, create branches with your name (i.e. nishant-create-cost-estimator).
+
+- There must be a file generate_recipes.py that can be run with a single parameter (the name of the data directory i.e. data/1/ or data/2/ etc) and should output on stdout valid json for the schedule with recipes (see data/final_output_example.json). For example
+```
+python generate_recipes.py data/1/ > 1_results.json
+```
+Should result in a valid scrap recipe schedule in 1_results.json.
+
+- Work with your teams not across teams (i.e. within Noodle or SMS) for the duration of the hackathon in the spirit of the hackathon.
+
+- You can use any public libraries and tools. They should be pip installable (add them to your requirements.txt).
 
 
-## Desired outcome
+## Helpful suggestions
 
-- Team should come up with some approximation to the actual application we are trying to build. I.e. The output should be a heat schedule with a suggested scrap mix + a Value-in-use dollar amount. We can specify a Value-in-use function or leave it to the teams.
-- Teams try to create modules that will actually exist in the real product (at least in terms of calls between them / APIs).
-- Teams can create simple text output to stdout. They can create a little webapp to give output as a web page. They can really do whatever they want.
-- The code must run and produce the output based on the data. We will change the data and see what happens to the output.
-- All code should be placed in public repository, no hidden or proprietary code
+- Make any assumptions you want in the interests of getting something done. If you can't get something done, create the simplest (or simplistic) solution, document it as 'to be improved' and move on. If something is not clear, add your assumptions and move forward.
 
-## What can we create?
+- Create a python virtual environment and keep a requirements.txt file so everyone in your team can run the code.
 
-You should do something with the data!
+- Use python3 (in case someone is still on 2.7)
 
-- that can be a machine learning model that predicts when the next scrap order arrives
-- a dashboard that visualises the sequences
-- a tool that detects NaNs in the data
-- a tool that will allow you to replace NaNs in the data
-- a dashboard that visualizes the size of the pile on the scrapyard
-... 
+- Work from the outside in. Get something working end to end with the API / function calls and function signatures first (mock the returned data) and then work on implementation.
 
-Teams will have 48 hours total from start to finish. We can let Dirk judge the winning team - they get lunch from the other team.
+- Any schedule with recipes (i.e. a greedy schedule vs optimal) is better than no schedule.
+
+- Git strategies:
+  - Use the merge vs rebase git technique. I.e. git fetch, git merge.
 
 
+## First steps for each team
+
+- (everyone) Send Nishant your github account name so you can become a collaborator on this repo.
+- Decide on the team name.
+- Create a branch that will be your teams 'master'. (team-super-cool-dudes). Make sure everyone can check something into this branch.
+- Go.
+
+## What else?
+
+Everything else goes. If you have someone interested in creating a UI that shows the schedule or triggers a recalculation of the recipes for a schedule, feel free.
+
+## Afterwards
+
+We want to know
+
+- How you collaborated.
+- What was your high level 'architecture' of the system.
+- What you learnt about the problem.
+- What was emphasised in your solution.
+- Anything else you want to contribute and take forward as we build the actual system.
